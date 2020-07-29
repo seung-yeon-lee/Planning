@@ -26,18 +26,9 @@ class Dashboard extends PureComponent {
 
 const mapStateToProps = (state) => {
   return {
-    projects: state.project.projects,
+    projects: state.firestore.ordered.projects,
   };
 };
-// export default compose(
-//   firebaseConnect((props) => [{ path: "projects" }]),
-//   connect(mapStateToProps)
-// )(Dashboard);
-
-// export default compose(
-//   firebaseConnect(["projects"]),
-//   connect(mapStateToProps)
-// )(Dashboard);
 
 export default compose(
   firestoreConnect([{ collection: "projects" }]),

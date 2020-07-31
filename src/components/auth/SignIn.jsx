@@ -1,4 +1,7 @@
 import React, { PureComponent } from "react";
+import { connect } from "react-redux";
+import { signIn } from "../../store/actions/authActions";
+import { Redirect } from "react-router-dom";
 
 class SignIn extends PureComponent {
   state = {
@@ -7,7 +10,7 @@ class SignIn extends PureComponent {
   };
   onSubmit = (e) => {
     e.preventDefault();
-    console.log(this.state);
+    this.props.sign(this.state);
   };
   onChange = (e) => {
     this.setState({
@@ -15,6 +18,8 @@ class SignIn extends PureComponent {
     });
   };
   render() {
+    const { authError, auth } = this.props;
+    if (auth.uid) return <Redirect to="/" />;
     return (
       <div className="container">
         <form onSubmit={this.onSubmit} className="white">
@@ -29,6 +34,9 @@ class SignIn extends PureComponent {
           </div>
           <div className="input-filed">
             <button className="btn pink lighten-1 z-depth-0">Login</button>
+            <div className="red-text center">
+              {authError ? <p>{authError}</p> : null}
+            </div>
           </div>
         </form>
       </div>
@@ -36,4 +44,17 @@ class SignIn extends PureComponent {
   }
 }
 
-export default SignIn;
+const mapStateToProps = (state) => {
+  return {
+    authError: state.auth.authError,
+    auth: state.firebase.auth,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    sign: (signData) => dispatch(signIn(signData)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

@@ -1,12 +1,17 @@
 import React from "react";
+import moment from "moment";
+import "moment/locale/ko";
+moment.locale("ko");
 
-const ProjectSummary = () => {
+const ProjectSummary = ({ project }) => {
   return (
-    <div className="card project-summary">
+    <div className="card z-depth-0 project-summary">
       <div className="card-content grey-text text-darken-3">
-        <span className="card-title">Project Title</span>
-        <p>Posted by the My</p>
-        <p className="grey-text">First Project</p>
+        <span className="card-title">{project.title}</span>
+        <p> Creator : {project.nickName}</p>
+        <p className="grey-text">
+          {moment(project.createdAt.toDate()).calendar()}
+        </p>
       </div>
     </div>
   );
